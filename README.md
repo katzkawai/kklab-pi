@@ -2,13 +2,17 @@
 
 日本の人口構造の長期推移、高齢化率の変動、および現役世代の扶養負担構造（胴上げ型から騎馬戦型、肩車型へ）を可視化したダッシュボードです。
 
+> **Note**  
+> 本サイトおよび可視化スクリプトは、コーディングエージェントハーネス [**pi**](https://github.com/earendil-works/pi-coding-agent) をハーネスに、モデルは **Gemini 3.8 Flash** を使って作成・検証・公開されました。
+
 ## 📊 可視化グラフ
 
 ![日本の人口構成推移と高齢化率](japan_aging_demographics.png)
 
-## 🌐 GitHub Pages
-本リポジトリは GitHub Pages に対応しています。
-リポジトリの **Settings → Pages → Build and deployment (Source: Deploy from a branch, Branch: main / root)** を有効化すると、Webブラウザ上で閲覧可能なレポートページが公開されます。
+## 🌐 公開サイト (GitHub Pages)
+
+本リポジトリは GitHub Pages で公開されています：  
+👉 **[https://katzkawai.org/kklab-pi/](https://katzkawai.org/kklab-pi/)** (または [https://katzkawai.github.io/kklab-pi/](https://katzkawai.github.io/kklab-pi/))
 
 ## 🚀 実行方法 (PEP 723 / uv)
 
