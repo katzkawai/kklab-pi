@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>日本の高齢化と人口構造の推移（1950〜2070推計）</title>
+  <meta name="description" content="日本の人口構成の長期推移と高齢化率、現役世代の扶養負担（胴上げ型から肩車型へ）のデータ可視化ダッシュボード。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-light: #3b82f6;
+      --accent-red: #c02543;
+      --text-main: #1f2937;
+      --text-sub: #4b5563;
+      --bg-page: #f8fafc;
+      --bg-card: #ffffff;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.7;
+      padding: 32px 16px 64px;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .badge {
+      display: inline-block;
+      background-color: #fee2e2;
+      color: var(--accent-red);
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 4px 14px;
+      border-radius: 9999px;
+      margin-bottom: 12px;
+      letter-spacing: 0.05em;
+    }
+
+    h1 {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--text-sub);
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+
+    .image-container {
+      padding: 16px;
+      background: #ffffff;
+      text-align: center;
+    }
+
+    .image-container img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      display: block;
+    }
+
+    .key-points {
+      padding: 28px 32px;
+      background: #fafafa;
+      border-top: 1px solid var(--border);
+    }
+
+    .key-points h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .grid-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 16px;
+      text-align: center;
+    }
+
+    .stat-year {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--accent-red);
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .stat-desc {
+      font-size: 0.82rem;
+      color: var(--text-sub);
+    }
+
+    .narrative {
+      font-size: 0.96rem;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .narrative li {
+      margin-left: 20px;
+      color: var(--text-sub);
+    }
+
+    .narrative li strong {
+      color: var(--text-main);
+    }
+
+    .footer-sources {
+      padding: 20px 32px;
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      background: #f1f5f9;
+      border-top: 1px solid var(--border);
+    }
+
+    .code-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 32px;
+      margin-bottom: 32px;
+    }
+
+    .code-section h3 {
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      color: #0f172a;
+    }
+
+    pre {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.9rem;
+      overflow-x: auto;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      margin-top: 48px;
+    }
+
+    footer a {
+      color: var(--primary-light);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+      .key-points {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="badge">データ可視化レポート</div>
+      <h1>日本の人口構造と高齢化の推移</h1>
+      <p class="subtitle">1950年の実績から2070年の将来推計まで、少子高齢化と扶養負担構造の変遷をひと目で紐解く</p>
+    </header>
+
+    <div class="card">
+      <div class="image-container">
+        <a href="japan_aging_demographics.png" target="_blank" rel="noopener noreferrer">
+          <img src="japan_aging_demographics.png" alt="日本の人口構成推移と高齢化率、現役世代の扶養負担比率の推移グラフ" loading="lazy">
+        </a>
+      </div>
+
+      <div class="key-points">
+        <h2>📊 データが示す主要なポイント</h2>
+        <div class="grid-stats">
+          <div class="stat-card">
+            <div class="stat-year">1970年（高齢化社会）</div>
+            <div class="stat-value">7.1%</div>
+            <div class="stat-desc">現役世代 9.8人で1人を支える</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-year">1994年（高齢社会）</div>
+            <div class="stat-value">14.1%</div>
+            <div class="stat-desc">現役世代 5.1人で1人を支える</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-year">2007年（超高齢社会）</div>
+            <div class="stat-value">21.5%</div>
+            <div class="stat-desc">世界に先駆け超高齢社会に突入</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-year">2025年（現在）</div>
+            <div class="stat-value">29.6%</div>
+            <div class="stat-desc">国民の約3人に1人／現役1.9人で支える</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-year">2070年（将来推計）</div>
+            <div class="stat-value">38.7%</div>
+            <div class="stat-desc">現役1.3人で1人を支える【肩車型】</div>
+          </div>
+        </div>
+
+        <ul class="narrative">
+          <li><strong>人口ボリュームの急激な変化：</strong> 2010年頃の約1億2,800万人をピークに人口減少が本格化し、2070年には総人口約8,700万人まで縮小する推計となっています。特に生産年齢人口（15〜64歳）は1995年の8,716万人から、2070年には4,529万人と半減近くまで減少します。</li>
+          <li><strong>「胴上げ型」から「肩車型」へ：</strong> 高齢者1人を支える現役世代は、1960年の<strong>11.3人（胴上げ型）</strong>から、1990年には<strong>5.8人（騎馬戦型）</strong>、そして2025年にはついに<strong>1.9人</strong>と2人を割り込み、2070年には<strong>1.3人（肩車型）</strong>という超高負荷構造へ移行します。</li>
+          <li><strong>75歳以上（後期高齢者）の増加：</strong> 単に65歳以上が増加するだけでなく、医療・介護の必要度が高まる75歳以上の後期高齢者が高齢者全体の約6割を占めるようになります。</li>
+        </ul>
+      </div>
+
+      <div class="footer-sources">
+        <strong>データ出典：</strong> 総務省統計局「国勢調査」（〜2020年）、国立社会保障・人口問題研究所「日本の将来推計人口（令和5年推計・出生中位／死亡中位仮定）」（2025年〜2070年）
+      </div>
+    </div>
+
+    <div class="code-section">
+      <h3>💻 スクリプトの再現方法（PEP 723 / uv）</h3>
+      <p style="margin-bottom: 12px; font-size: 0.9rem; color: var(--text-sub);">
+        本グラフは PEP 723 規格に準拠した Python スクリプトで生成されています。uv を使用することで追加の仮想環境作成や pip 手動インストールなしで再現可能です。
+      </p>
+      <pre><code># uv を使って依存関係解決から画像生成まで一発実行
+uv run visualize_aging_japan.py</code></pre>
+    </div>
+
+    <footer>
+      <p>Generated with <a href="https://github.com/earendil-works/pi-coding-agent" target="_blank">pi</a> | Source Repository on GitHub</p>
+    </footer>
+  </div>
+</body>
+</html>
